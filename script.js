@@ -4,10 +4,12 @@ const firstNumber = document.querySelector("#firstnumber");
 const secondNumber = document.querySelector("#secondnumber");
 const decimalSelect = document.querySelector("#decimals");
 const doRound = document.querySelector("#doround");
+const results = document.querySelector("#results");
+const clearButton = document.querySelector("#clear");
 
 let operation = "";
-let result = 0;
-let operationNumber = 0;
+let result = null;
+let operationNumber = null;
 let decimalValue = "";
 let isRounded = doRound.checked;
 
@@ -25,6 +27,18 @@ const checkIsRounded = () => {
   getOperation("decimal");
 };
 
+const saveCalculationResult = () => {
+  let li = document.createElement("li");
+  li.innerHTML = result;
+  results.appendChild(li);
+};
+
+const clearResults = () => {
+  while (results.firstChild) {
+    results.removeChild(results.firstChild);
+  }
+};
+
 const calculateResult = (value) => {
   switch (value) {
     case "+":
@@ -36,7 +50,7 @@ const calculateResult = (value) => {
     case "/":
       return (result /= operationNumber);
     default:
-      console.log("2137");
+      console.log("Wrong operator");
       break;
   }
 };
@@ -50,6 +64,8 @@ const doMath = () => {
     result = result.toFixed(parseInt(decimalValue));
   }
   firstNumber.value = result;
+  saveCalculationResult();
+  results.lastChild.scrollIntoView();
 };
 
 const start = () => {
@@ -58,6 +74,7 @@ const start = () => {
   decimalSelect.addEventListener("change", () => {
     getOperation("decimal");
   });
+  clearButton.addEventListener("click", clearResults);
 };
 
 document.addEventListener("DOMContentLoaded", start);
